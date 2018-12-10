@@ -8,7 +8,7 @@
 
 config
 
-   --config.js
+   └config.js
 
 config.js中的配置(必填项，可更改)
 
