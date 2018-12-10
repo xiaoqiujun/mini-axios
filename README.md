@@ -18,11 +18,9 @@ config.js中的配置(必填项，可更改)
   
 
 最后在项目根目录的app.js中挂载http
-    App({
-        onLaunch(){},
-        ...,
-        
-        
-        
-        http
-    })
+
+	App({
+           onLaunch(){},
+           ...,
+           http
+	})
