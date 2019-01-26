@@ -7,7 +7,7 @@
 在项目根目录的app.js中可以挂载http或者单独使用
 
 #### 使用指南
-   app.js
+     app.js
 	http.interceptor({
 		baseUrl: '',
 		header: {
@@ -51,7 +51,7 @@
            http
 	})
 
-   index.js
+     index.js
 	Page({
 		onLoad() {
 			let url = 'api.demo.com/demo'
