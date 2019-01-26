@@ -1,135 +1,197 @@
-/**
- * 封装小程序网络请求
+﻿/**
+ * 小程序网络请求简单封装
  * ------------------
  * @author 肖均
  * @github https://github.com/xiaoqiujun
- * @update 2018.12.09
- * @version v1.1.0 测试版
+ * @update 2019.1.26
+ * @version v1.2.0 测试版 未完善
  */
-module.exports = (function(config) {
-    if (typeof config === 'object' && config.hasOwnProperty) {
-        if (!(config.hasOwnProperty('HEADER') && config.hasOwnProperty('API_PATH'))) {
-            console.error('config没有HEADER或者API_PATH属性')
-            return
-        }
-    }
-    var http = void(0)
-    var request = null
-    const page = Page
+var http = void(0)
+var _this = void(0)
+var request = null
+var requestConfig = Object.create(null)
+var successConfig = Object.create(null)
+var failConfig = Object.create(null)
+var interceptConfig = Object.create(null)
+let timer = null
+const page = Page
+const com = Component
 
-    function Http(option = {}) {
-        this.option = option || {}
-        this.domain = option.domain || config.API_PATH
+function Http(option = {}) {
+    _this = this
+    this.option = option || {}
+    this.domain = this.option.baseUrl || ''
+}
+Promise.prototype.header = function(fn) {
+    if (request != null) {
+        request.onHeadersReceived(header => {
+            if (typeof fn === 'function')
+                return fn(header.header)
+            else
+                console.error('header必须有个回调函数')
+            return
+        })
     }
-    Promise.prototype.header = function (fn) {
-        if (request != null) {
-            request.onHeadersReceived(header => {
-                if (typeof fn === 'function')
-                    return fn(header.header)
-                else
-                    console.error('header必须有个回调函数')
-                return
+}
+/**
+ * 添加request拦截器
+ * @update 2019.01.26
+ */
+Http.prototype.interceptor = (config = {}) => {
+    Object.keys(config).forEach(key => {
+        interceptConfig[key] = config[key]
+    })
+    if (typeof config.request === 'function') {
+        if (Object.keys(requestConfig)) {
+            requestConfig = config.request.call(_this, requestConfig)
+        }
+    }
+    if (typeof config.success === 'function') {
+        if (Object.keys(successConfig).length) {
+            successConfig = config.success.call(_this, successConfig)
+        }
+    }
+    if (typeof config.fail === 'function') {
+        if (Object.keys(failConfig).length) {
+            failConfig = config.fail.call(_this, failConfig)
+        }
+    }
+    return _this.option = {
+        ..._this._option,
+        baseUrl: config.baseUrl,
+        header: config.header
+    }
+}
+/**
+ * @description 发起GET请求
+ * @param url String 接收一个Url地址
+ * @param data Object 接收一个对象 请求的参数
+ * @param isload Boolean 是否开启Loading 
+ * @param loadtext String Loading自定义显示的内容
+ */
+Http.prototype.get = (...args) => {
+    interceptConfig.request.call(_this, requestConfig)
+    if (args[2] === true) {
+        if (wx.showLoading) {
+            if (timer) {
+                clearTimeout(timer)
+            }
+            wx.showLoading({
+                title: args[3] || '加载中'
             })
         }
     }
-    /**
-     * @description 发起GET请求
-     * @param url String 接收一个Url地址
-     * @param data Object 接收一个对象 请求的参数
-     * @param isload Boolean 是否开启Loading 
-     * @param loadtext String Loading自定义显示的内容
-     */
-    Http.prototype.get = (...args) => {
-        let timer = null
-        if (args[2] === true) wx.showLoading({
-            title: args[3] || '加载中'
+    return new Promise((resolve, reject) => {
+        if (args[0] === '') return console.error('request:fail invalid url ""') || reject({
+            code: -1,
+            msg: '请求错误：url地址不能为空'
         })
-        return new Promise((resolve, reject) => {
-            if (args[0] === '') return console.error('request:fail invalid url ""') || reject({
-                code: -1,
-                msg: '请求错误：url地址不能为空'
-            })
-            request = wx.request({
-                url: config.API_PATH + args[0],
-                method: 'GET',
-                header: config.HEADER,
-                data: ((typeof args[1] === 'object') && args[1]) || {},
-                success(response) {
-                    if (response.data) {
-                        resolve(response)
-                        clearTimeout(timer)
+        request = wx.request({
+            url: _this.option.baseUrl + args[0],
+            method: 'GET',
+            header: _this.option.header,
+            data: {
+                ...((typeof args[1] === 'object') && args[1]) || {},
+                ...requestConfig
+            },
+            success(response) {
+                if (response.errMsg === 'request:ok') {
+                    resolve(response)
+                    if (args[2] && wx.hideLoading) {
                         timer = setTimeout(function() {
                             wx.hideLoading()
-                        }, 300)
+                        }, 500)
                     }
-                },
-                fail(error) {
-                    reject(error)
                 }
-            })
-        })
-    }
-    /**
-     * @description 发起POST请求
-     * @param url String 接收一个Url地址
-     * @param data Object 接收一个对象 请求的参数
-     * @param isload Boolean 是否开启Loading 
-     * @param loadtext String Loading自定义显示的内容
-     */
-    Http.prototype.post = (...args) => {
-        let timer = null
-        if (args[2] === true) wx.showLoading({
-            title: args[3] || '加载中'
-        })
-        return new Promise((resolve, reject) => {
-            if (args[0] === '') return console.error('request:fail invalid url ""') || reject({
-                code: -1,
-                msg: '请求错误：url地址不能为空'
-            })
-            wx.request({
-                url: config.API_PATH + args[0],
-                method: 'POST',
-                header: config.HEADER,
-                data: ((typeof args[1] === 'object') && args[1]) || {},
-                success(response) {
-                    if (response.data) {
-                        resolve(response)
-                        clearTimeout(timer)
-                        timer = setTimeout(function () {
-                            wx.hideLoading()
-                        }, 300)
-                    }
-                },
-                fail(error) {
-                    reject(error)
-                }
-            })
-        })
-    }
-    /**
-     * 注入
-     */
-    Page = function(_option) {
-        const {
-            http
-        } = getApp()
-        if (typeof http === 'object' && http.getInstance) {
-            _option.$http = getApp().$http = http.getInstance()
-        } else {
-            console.error('app.js 未挂载http')
-        }
-        page(_option)
-    }
-    return {
-        /**
-         * 单例模式 
-         * 暴露接口
-         */
-        getInstance() {
-            if (http === undefined) {
-                http = new Http()
+                interceptConfig.success.call(_this, response)
+            },
+            fail(error) {
+                interceptConfig.fail.call(_this, error)
+                reject(error)
             }
-            return http
+        })
+    })
+}
+/**
+ * @description 发起POST请求
+ * @param url String 接收一个Url地址
+ * @param data Object 接收一个对象 请求的参数
+ * @param isload Boolean 是否开启Loading 
+ * @param loadtext String Loading自定义显示的内容
+ */
+Http.prototype.post = (...args) => {
+    interceptConfig.request.call(_this, requestConfig)
+    if (args[2] === true) {
+        if (wx.showLoading) {
+            if (timer) {
+                clearTimeout(timer)
+            }
+            wx.showLoading({
+                title: args[3] || '加载中'
+            })
         }
     }
-}(require('../config/config')))
+    return new Promise((resolve, reject) => {
+        if (args[0] === '') return console.error('request:fail invalid url ""') || reject({
+            code: -1,
+            msg: '请求错误：url地址不能为空'
+        })
+        wx.request({
+            url: _this.option.baseUrl + args[0],
+            method: 'POST',
+            header: _this.option.header,
+            data: {
+                ...((typeof args[1] === 'object') && args[1]) || {},
+                ...requestConfig
+            },
+            success(response) {
+                if (response.errMsg === 'request:ok') {
+                    resolve(response)
+                    if (args[2] && wx.hideLoading) {
+                        timer = setTimeout(function() {
+                            wx.hideLoading()
+                        }, 500)
+                    }
+                }
+                interceptConfig.success.call(_this, response)
+            },
+            fail(error) {
+                interceptConfig.fail.call(_this, error)
+                reject(error)
+            }
+        })
+    })
+}
+Http.prototype.uploadFile = function(url, name, filePath, formData) {
+    return new Promise((resolve, reject) => {
+        wx.uploadFile({
+            url: _this.option.baseUrl + url,
+            filePath: filePath,
+            name: name,
+            formData: formData || {},
+            success(res) {
+                resolve(res)
+                interceptConfig.success.call(_this, response)
+            },
+            fail(res) {
+                reject(res)
+                interceptConfig.fail.call(_this, error)
+            }
+        })
+    })
+}
+//....
+/**
+ * 注入
+ */
+Page = function(_option) {
+    const {
+        http
+    } = getApp()
+    if (typeof http === 'object') {
+        _option.$http = getApp().$http = http
+    }
+    page(_option)
+}
+
+module.exports = new Http()
