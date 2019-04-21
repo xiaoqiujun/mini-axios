@@ -69,8 +69,8 @@ module.exports = (function() {
      * @param loadtext String Loading自定义显示的内容
      */
     Http.prototype.get = function(...args) {
-        let _this = this
         interceptConfig.request.call(this, requestConfig)
+        let _this = this
         if (args[2] === true) {
             if (wx.showLoading) {
                 if (timer) {
@@ -95,6 +95,7 @@ module.exports = (function() {
                     ...requestConfig
                 },
                 success(response) {
+                    interceptConfig.success.call(this, response)
                     if (response.errMsg === 'request:ok') {
                         resolve(response)
                         if (args[2] && wx.hideLoading) {
@@ -103,7 +104,6 @@ module.exports = (function() {
                             }, 500)
                         }
                     }
-                    interceptConfig.success.call(this, response)
                 },
                 fail(error) {
                     interceptConfig.fail.call(this, error)
@@ -120,8 +120,8 @@ module.exports = (function() {
      * @param loadtext String Loading自定义显示的内容
      */
     Http.prototype.post = function(...args) {
-        let _this = this
         interceptConfig.request.call(this, requestConfig)
+        let _this = this
         if (args[2] === true) {
             if (wx.showLoading) {
                 if (timer) {
@@ -146,6 +146,7 @@ module.exports = (function() {
                     ...requestConfig
                 },
                 success(response) {
+                    interceptConfig.success.call(_this, response)
                     if (response.errMsg === 'request:ok') {
                         resolve(response)
                         if (args[2] && wx.hideLoading) {
@@ -154,7 +155,6 @@ module.exports = (function() {
                             }, 500)
                         }
                     }
-                    interceptConfig.success.call(_this, response)
                 },
                 fail(error) {
                     interceptConfig.fail.call(_this, error)
@@ -172,12 +172,12 @@ module.exports = (function() {
                 name: name,
                 formData: formData || {},
                 success(res) {
-                    resolve(res)
                     interceptConfig.success.call(_this, response)
+                    resolve(res)
                 },
                 fail(res) {
-                    reject(res)
                     interceptConfig.fail.call(_this, error)
+                    reject(res)
                 }
             })
         })
