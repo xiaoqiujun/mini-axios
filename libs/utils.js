@@ -27,7 +27,6 @@ function isArray(obj) {
 	if(Array.isArray) return Array.isArray(obj)
 	return obj.constructor === Array && obj.prototype.toString.call(obj) === '[object Array]'
 }
-
 /**
  * @description 小写转换成大写
  * @param str string 接收一个字符串类型
