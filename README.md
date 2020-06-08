@@ -4,9 +4,10 @@
 
 ## 引入到项目中
 
-- 第一步， npm i wxAxios
-- 第二步， 复制 dist 目录下的 wxAxios.min.js 到项目中
-- 第三步， ` import axios from './libs/wxAxios.min.js' `
+- 第一步， npm i mini-axios
+- 第二步 import axios from 'mini-axios' 
+- 第三步， 复制 dist 目录下的 wxAxios.min.js 到项目中	//如果小程序安装了npm环境可跳过 三、四步
+- 第四步， ` import axios from './libs/wxAxios.min.js' `
 
 
 ## 快速使用
