@@ -1,4 +1,4 @@
-# wxAxios
+# mini-axios
 
 > 基于 axios 封装的微信小程序请求工具，完全使用Promise，并提供了请求和响应的拦截器。
 
