@@ -1,4 +1,4 @@
-# mini-axios
+# mini-axios(只适用于原生小程序开发)
 
 > 基于 axios 封装的微信小程序请求工具，完全使用Promise，并提供了请求和响应的拦截器。
 
@@ -6,15 +6,15 @@
 
 - 第一步， npm i mini-axios
 - 第二步 import axios from 'mini-axios' 
-- 第三步， 复制 dist 目录下的 wxAxios.min.js 到项目中	//如果小程序安装了npm环境可跳过 三、四步
-- 第四步， ` import axios from './libs/wxAxios.min.js' `
+- 第三步， 复制 dist 目录下的 mini-axios.min.js 到项目中	//如果小程序安装了npm环境可跳过 三、四步
+- 第四步， ` import axios from './libs/mini-axios.min.js' `
 
 
 ## 快速使用
 
 ```js
 // http.js
-import axios from './libs/wxAxios.min.js'
+import axios from './libs/mini-axios.min.js'
 axios.get(url).then(res => {
     console.log(res )
 })
@@ -32,7 +32,7 @@ axios.get(url).then(res => {
 //只需要在app.js中导入就好
 --app.js
 
-    import axios from './libs/wxAxios.min.js'
+    import axios from './libs/mini-axios.min.js'
     App({
         onLaunch: function () {
              this.$axios.get(url).then(res => {
@@ -84,7 +84,7 @@ axios.race([getUserInfo, getList]).then(res=> {
 })
 ```
 
-## wxAxios API
+## MiniAxios API
 
 axios(config)
 ```js
@@ -179,7 +179,7 @@ axios.defaults.baseURL = 'https://xxx.com'
 ```
 ## 拦截器 Interceptors
 
-> wxAxios 也提供了和 axios 一样的请求拦截和响应拦截，并且可以配置多个
+> mini-axios 也提供了和 axios 一样的请求拦截和响应拦截，并且可以配置多个
 
 #### request
 ```js

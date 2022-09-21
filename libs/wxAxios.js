@@ -10,7 +10,7 @@ const {
 const page = Page
 const com = Component
 const app = App
-if (!page || !com) throw new Error("[wxAxios] 请检查是否有小程序环境");
+if (!page || !com) throw new Error("[mini-axios] 请检查是否有小程序环境");
 function getInstance(config) {
 	let ctx = new wxAxios(config)
 	let instance = bind(wxAxios.prototype.request, ctx)

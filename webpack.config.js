@@ -2,12 +2,12 @@ const path = require('path')
 module.exports = {
     mode: process.env.NODE_ENV.trim(),
     entry:{
-        app: './libs/wxAxios.js'
+        app: './index.js'
     },
     output:{
-        filename: process.env.NODE_ENV === 'development' ? 'wxAxios.js': 'wxAxios.min.js',
+        filename: process.env.NODE_ENV === 'development' ? 'mini-axios.js': 'mini-axios.min.js',
         path: path.resolve(__dirname, 'dist'),
-        library: 'wxAxios',
+        library: 'MiniAxios',
         libraryTarget: "umd"
     },
     devtool: 'source-map',
