@@ -1,6 +1,6 @@
 {
   "name": "mini-axios",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "基于 axios 封装的微信小程序请求工具，完全使用Promise，并提供了请求和响应的拦截器",
   "main": "mini-axios.min.js",
   "scripts": {
@@ -16,13 +16,13 @@
   ],
   "author": "xiaoqiujun",
   "repository": {
-		"type": "git",
-		"url": "git+https://github.com/xiaoqiujun/mini-axios.git"
-	},
+    "type": "git",
+    "url": "git+https://github.com/xiaoqiujun/mini-axios.git"
+  },
   "bugs": {
-		"url": "https://github.com/xiaoqiujun/mini-axios/issues"
-	},
-	"homepage": "https://github.com/xiaoqiujun/mini-axios#readme",
+    "url": "https://github.com/xiaoqiujun/mini-axios/issues"
+  },
+  "homepage": "https://github.com/xiaoqiujun/mini-axios#readme",
   "license": "MIT",
   "devDependencies": {
     "babel": "^6.23.0",
