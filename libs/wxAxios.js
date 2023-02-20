@@ -5,13 +5,19 @@ const {
 	merge,
 	bind,
 	extend,
-	extendMini
+	extendMini,
+	has,
+	isObj
 } = require("./utils")
 const page = Page
 const com = Component
 const app = App
 if (!page || !com) throw new Error("[mini-axios] 请检查是否有小程序环境");
 function getInstance(config) {
+	if(has(config, 'headers')) {
+		//合并header 兼容 headers
+		config.header = merge(config.header, isObj(config.headers) ? config.headers : {})
+	}
 	let ctx = new wxAxios(config)
 	let instance = bind(wxAxios.prototype.request, ctx)
 	extend(instance, wxAxios.prototype, ctx)

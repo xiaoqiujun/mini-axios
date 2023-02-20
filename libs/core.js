@@ -33,7 +33,7 @@ Http.prototype.request = function request(config) {
 	return promise
 }
 
-forEach(['get', 'post', 'put', 'delete', 'trace', 'options', 'head', 'connect'], function (method) {
+forEach(['get', 'post', 'put', 'delete', 'options'], function (method) {
     Http.prototype[method] = function(url, data = {}) {
         return this.request(merge(this.defaults || {}, {
             method: toUpperCase(method),

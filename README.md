@@ -130,21 +130,21 @@ axios(url, {
 - 
 - [x] ==OPTIONS== HTTP 请求 OPTIONS	
 - [x] ==GET==	HTTP 请求 GET	
-- [x] ==HEAD==	HTTP 请求 HEAD	
+- [ ] ~~==HEAD==	HTTP 请求 HEAD~~	(miniAxios中已废弃)
 - [x] ==POST==	HTTP 请求 POST	
 - [x] ==PUT==	HTTP 请求 PUT	
 - [x] ==DELETE==	HTTP 请求 DELETE	
-- [x] ==TRACE==	HTTP 请求 TRACE	
-- [x] ==CONNECT==	HTTP 请求 CONNEC
+- [ ] ~~==TRACE==	HTTP 请求 TRACE~~	(miniAxios中已废弃)
+- [ ] ~~==CONNECT==	HTTP 请求 CONNECT~~ (miniAxios中已废弃)
 
 ##### axios.get(url[, config])
 ##### axios.post(url[, config])
 ##### axios.put(url[, config])
 ##### axios.delete(url[, config])
 ##### axios.options(url[, config])
-##### axios.head(url[, config])
-##### axios.trace(url[, config])
-##### axios.connect(url[, config])
+##### ~~axios.head(url[, config])~~(miniAxios中已废弃)
+##### ~~axios.trace(url[, config])~~(miniAxios中已废弃)
+##### ~~axios.connect(url[, config])~~(miniAxios中已废弃)
 
 ## 创建实例
 ```js
@@ -169,7 +169,7 @@ server1.get(url).then(res => {
 baseURL | 默认地址  `baseURL` 将自动加在 `url` 前面 | `string`| `''`
 url| `url` 是用于请求的服务器 URL | `string` | `''`
 data| `data` 是作为请求主体被发送的数据 | `object` | `{}`
-header| `headers` 是即将被发送的自定义请求头 | `object` | `'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'`
+header/headers| `headers` 是即将被发送的自定义请求头 | `object` | `'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'`
 method| `method` 是创建请求时使用的方法 | `string` | `'GET'`
 dataType| `dataType` 是返回的数据类型 | `string` | `'json'`
 responseType| `responseType` 是响应的数据类型 | `string` | `'text'`

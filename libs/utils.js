@@ -135,6 +135,22 @@ function merge() {
 	return result
 }
 
+/**
+ * @description 判断属性是否存在
+ *
+ * @param {*} obj 任意类型, 不是obejct返回false
+ * @param {(string|number)} v 需要查找的属性名
+ * @return {*}  {boolean} 返回一个布尔值
+ * @example has({a:1}, "a") => true
+ */
+function has(obj, v) {
+	if (typeof obj !== 'object') return false
+	return Object.prototype.hasOwnProperty.call(obj, v)
+}
+
+function isObj(v) {
+	return Object.prototype.toString.call(v) === '[object Object]'
+}
 module.exports = {
 	typeOf,
 	isNull,
@@ -146,5 +162,7 @@ module.exports = {
 	merge,
 	extendMini,
 	toUpperCase,
-	toLowerCase
+	toLowerCase,
+	has,
+	isObj
 }
