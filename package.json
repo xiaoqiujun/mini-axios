@@ -1,6 +1,6 @@
 {
   "name": "mini-axios",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "基于 axios 封装的微信小程序请求工具，完全使用Promise，并提供了请求和响应的拦截器",
   "main": "mini-axios.min.js",
   "scripts": {
